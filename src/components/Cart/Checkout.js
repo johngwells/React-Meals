@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import classes from "./Checkout.module.css";
 
 const isEmpty = (value) => value.trim() === "";
-const isFiveChars = (value) => value.trim() === 5;
+const isFiveChars = (value) => value.trim() !== 5;
 
 const Checkout = (props) => {
   const [formInputValid, setFormInputValid] = useState({
@@ -38,23 +38,38 @@ const Checkout = (props) => {
       postal: enteredPostalIsValid
     });
 
-    const formIsValid = enteredNameIsValid && enteredStreetIsValid && enteredCityIsValid && enteredPostalIsValid;
+    const formIsValid =
+      enteredNameIsValid &&
+      enteredStreetIsValid &&
+      enteredCityIsValid &&
+      enteredPostalIsValid;
 
     if (!formIsValid) {
       return;
-    } else {
-      
     }
-  
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postal: enteredPostal
+    });
   };
 
-  const nameControlClass = `${classes.control} ${formInputValid.name ? '' : classes.invalid}`
+  const nameControlClass = `${classes.control} ${
+    formInputValid.name ? "" : classes.invalid
+  }`;
 
-  const streetControlClass = `${classes.control} ${formInputValid.street ? '' : classes.invalid}`
+  const streetControlClass = `${classes.control} ${
+    formInputValid.street ? "" : classes.invalid
+  }`;
 
-  const cityControlClass = `${classes.control} ${formInputValid.city ? '' : classes.invalid}`
+  const cityControlClass = `${classes.control} ${
+    formInputValid.city ? "" : classes.invalid
+  }`;
 
-  const postalControlClass = `${classes.control} ${formInputValid.postal ? '' : classes.invalid}`
+  const postalControlClass = `${classes.control} ${
+    formInputValid.postal ? "" : classes.invalid
+  }`;
 
   return (
     <form>
@@ -76,7 +91,9 @@ const Checkout = (props) => {
       <div className={postalControlClass}>
         <label htmlFor="postal">Postal</label>
         <input type="text" id="postal" ref={postalInputref} />
-        {!formInputValid.postal && <p>Please enter your postal code (5 digits)</p>}
+        {!formInputValid.postal && (
+          <p>Please enter your postal code (5 digits)</p>
+        )}
       </div>
       <div className={classes.actions}>
         <button type="button" onClick={props.onCancel}>
